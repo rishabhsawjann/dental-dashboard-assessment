@@ -416,61 +416,66 @@ export default function PatientsTable() {
                   const lastVisit = getLastVisit(patient.id, incidents);
                   
                   return (
-                    <tr key={patient.id} className={`border-b border-gray-100/50 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/30 transition-all duration-300 ${index % 2 === 0 ? 'bg-white/60' : 'bg-gray-50/40'}`}>
-                      <td className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center overflow-hidden shadow-sm border border-blue-200/50">
-                            {patient.profilePic ? (
-                              <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-lg text-blue-400">👤</span>
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-semibold text-gray-800">{patient.name}</div>
-                            <div className="text-sm text-gray-600">{patient.gender || 'Not specified'} • {patient.bloodGroup || 'No blood group'}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="p-4 text-gray-700">{age} years</td>
-                      <td className="p-4 text-gray-700">{patient.contact}</td>
-                      <td className="p-4">
-                        <div className="text-gray-700 font-medium">{visitCount}</div>
-                        {lastVisit && <div className="text-xs text-gray-500">Last: {lastVisit.toLocaleDateString()}</div>}
-                      </td>
-                      <td className="p-4">
-                        <div className="flex flex-wrap gap-1">
-                          {patient.tags && patient.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="px-2 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-xs font-medium border border-blue-200/50 shadow-sm hover:shadow-md transition-all duration-200">
-                              {tag}
-                            </span>
-                          ))}
-                          {patient.tags && patient.tags.length > 2 && (
-                            <span className="px-2 py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 rounded-full text-xs font-medium border border-gray-200/50 shadow-sm">
-                              +{patient.tags.length - 2}
-                            </span>
+                    <tr
+                      key={patient.id}
+                      className={`border-b border-gray-100/50 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/30 transition-all duration-300 ${index % 2 === 0 ? 'bg-white/60' : 'bg-gray-50/40'}
+                        md:table-row flex flex-col md:flex-row mb-4 md:mb-0 rounded-xl md:rounded-none shadow md:shadow-none overflow-hidden`
+                    }
+                  >
+                    <td className="p-4 w-full md:w-auto flex-1">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center overflow-hidden shadow-sm border border-blue-200/50">
+                          {patient.profilePic ? (
+                            <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-lg text-blue-400">👤</span>
                           )}
                         </div>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex gap-2">
-                          <button 
-                            onClick={() => { setEditPatient(patient); setShowForm(true); }} 
-                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 hover:from-blue-200 hover:to-indigo-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transform"
-                          >
-                            Edit
-                          </button>
-                          <button 
-                            onClick={() => window.confirm('Are you sure you want to delete this patient?') && deletePatient(patient.id)} 
-                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-red-100 to-pink-100 text-red-700 hover:from-red-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transform"
-                          >
-                            Delete
-                          </button>
+                        <div>
+                          <div className="font-semibold text-gray-800">{patient.name}</div>
+                          <div className="text-sm text-gray-600">{patient.gender || 'Not specified'} • {patient.bloodGroup || 'No blood group'}</div>
                         </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                      </div>
+                    </td>
+                    <td className="p-4 text-gray-700 w-full md:w-auto flex-1">{age} years</td>
+                    <td className="p-4 text-gray-700 w-full md:w-auto flex-1">{patient.contact}</td>
+                    <td className="p-4 w-full md:w-auto flex-1">
+                      <div className="text-gray-700 font-medium">{visitCount}</div>
+                      {lastVisit && <div className="text-xs text-gray-500">Last: {lastVisit.toLocaleDateString()}</div>}
+                    </td>
+                    <td className="p-4 w-full md:w-auto flex-1">
+                      <div className="flex flex-wrap gap-1">
+                        {patient.tags && patient.tags.slice(0, 2).map(tag => (
+                          <span key={tag} className="px-2 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-xs font-medium border border-blue-200/50 shadow-sm hover:shadow-md transition-all duration-200">
+                            {tag}
+                          </span>
+                        ))}
+                        {patient.tags && patient.tags.length > 2 && (
+                          <span className="px-2 py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 rounded-full text-xs font-medium border border-gray-200/50 shadow-sm">
+                            +{patient.tags.length - 2}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="p-4 w-full md:w-auto flex-1">
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => { setEditPatient(patient); setShowForm(true); }} 
+                          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 hover:from-blue-200 hover:to-indigo-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transform"
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          onClick={() => window.confirm('Are you sure you want to delete this patient?') && deletePatient(patient.id)} 
+                          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-red-100 to-pink-100 text-red-700 hover:from-red-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md hover:scale-[1.02] transform"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
               </tbody>
             </table>
           </div>
