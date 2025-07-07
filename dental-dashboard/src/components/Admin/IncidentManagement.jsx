@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAppData } from '../context/AppDataContext';
-import { UserRound, CalendarClock, Hourglass, CheckCircle2, DollarSign } from 'lucide-react';
+import { useAppData } from '../../context/AppDataContext';
+import { CalendarClock, Hourglass, CheckCircle2 } from 'lucide-react';
 
-// Utility functions
+
 const getStatusColor = (status) => {
   switch (status) {
     case 'Pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
@@ -33,6 +33,50 @@ const getTreatmentIcon = (title) => {
   if (lowerTitle.includes('x-ray')) return '📷';
   return '🦷';
 };
+
+
+const STATUS_FILTER_OPTIONS = [
+  { value: 'all', label: 'All Status', icon: null },
+  { value: 'Pending', label: 'Pending', icon: <Hourglass className="w-4 h-4 text-yellow-600 inline-block mr-2" /> },
+  { value: 'In Progress', label: 'In Progress', icon: <CalendarClock className="w-4 h-4 text-blue-600 inline-block mr-2" /> },
+  { value: 'Completed', label: 'Completed', icon: <CheckCircle2 className="w-4 h-4 text-green-600 inline-block mr-2" /> },
+  { value: 'Cancelled', label: 'Cancelled', icon: <CalendarClock className="w-4 h-4 text-red-600 inline-block mr-2" /> },
+];
+
+function StatusFilterDropdown({ value, onChange }) {
+  const [open, setOpen] = React.useState(false);
+  const selected = STATUS_FILTER_OPTIONS.find(opt => opt.value === value) || STATUS_FILTER_OPTIONS[0];
+  return (
+    <div className="relative min-w-[160px]">
+      <button
+        type="button"
+        className="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:shadow-md hover:border-gray-400"
+        onClick={() => setOpen(o => !o)}
+      >
+        <span className="flex items-center">
+          {selected.icon}
+          {selected.label}
+        </span>
+        <svg className="w-4 h-4 ml-2 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+      </button>
+      {open && (
+        <div className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-xl">
+          {STATUS_FILTER_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              className={`w-full flex items-center px-4 py-2 text-left hover:bg-blue-50 transition-all duration-200 ${value === opt.value ? 'bg-blue-100' : ''}`}
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              type="button"
+            >
+              {opt.icon}
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function IncidentForm({ initial, patientId, onSave, onCancel }) {
   const [form, setForm] = useState(initial || {
@@ -78,7 +122,7 @@ function IncidentForm({ initial, patientId, onSave, onCancel }) {
   const suggestNextVisit = () => {
     const today = new Date();
     const nextDate = new Date(today);
-    nextDate.setMonth(today.getMonth() + 6); // 6 months default
+    nextDate.setMonth(today.getMonth() + 6);
     setForm(f => ({ ...f, nextDate: nextDate.toISOString().split('T')[0] }));
   };
 
@@ -184,7 +228,7 @@ function IncidentForm({ initial, patientId, onSave, onCancel }) {
           />
         </div>
 
-        {/* Comments Thread */}
+        
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">Comments & Notes</label>
           <div className="space-y-3">
@@ -213,7 +257,7 @@ function IncidentForm({ initial, patientId, onSave, onCancel }) {
           </div>
         </div>
 
-        {/* File Upload */}
+        
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">Attachments</label>
           <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
@@ -277,7 +321,7 @@ export default function IncidentManagement({ patientId }) {
   const { incidents, addIncident, updateIncident, deleteIncident, patients } = useAppData();
   const [showForm, setShowForm] = useState(false);
   const [editIncident, setEditIncident] = useState(null);
-  const [viewMode, setViewMode] = useState('timeline'); // 'timeline' or 'table'
+  const [viewMode, setViewMode] = useState('timeline'); 
   const [filterStatus, setFilterStatus] = useState('all');
 
   const patient = patients.find(p => p.id === patientId);
@@ -295,7 +339,7 @@ export default function IncidentManagement({ patientId }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8">
-      {/* Header */}
+      
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-8 gap-4">
         <div>
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
@@ -335,7 +379,7 @@ export default function IncidentManagement({ patientId }) {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
           <div className="text-2xl font-bold text-blue-600">{patientIncidents.length}</div>
@@ -357,22 +401,12 @@ export default function IncidentManagement({ patientId }) {
         </div>
       </div>
 
-      {/* Filter */}
+      
       <div className="mb-6">
-        <select 
-          value={filterStatus}
-          onChange={e => setFilterStatus(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="all">All Status</option>
-          <option value="Pending">⏳ Pending</option>
-          <option value="In Progress">🔄 In Progress</option>
-          <option value="Completed">✅ Completed</option>
-          <option value="Cancelled">❌ Cancelled</option>
-        </select>
+        <StatusFilterDropdown value={filterStatus} onChange={setFilterStatus} />
       </div>
 
-      {/* Timeline View */}
+      
       {viewMode === 'timeline' && (
         <div className="space-y-6">
           {sortedIncidents.length === 0 ? (
@@ -449,7 +483,7 @@ export default function IncidentManagement({ patientId }) {
         </div>
       )}
 
-      {/* Table View */}
+      
       {viewMode === 'table' && (
         <div className="bg-gray-50 rounded-xl overflow-hidden">
           <table className="w-full">
@@ -499,7 +533,7 @@ export default function IncidentManagement({ patientId }) {
                     </span>
                   </td>
                   <td className="p-4 text-green-600 font-semibold">
-                    {incident.cost ? `$${incident.cost}` : '-'}
+                    {incident.cost ? `${incident.cost}` : '-'}
                   </td>
                   <td className="p-4 text-gray-700">
                     {incident.nextDate ? new Date(incident.nextDate).toLocaleDateString() : '-'}
@@ -527,7 +561,7 @@ export default function IncidentManagement({ patientId }) {
         </div>
       )}
 
-      {/* Modal Overlay */}
+      
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <IncidentForm
@@ -544,4 +578,4 @@ export default function IncidentManagement({ patientId }) {
       )}
     </div>
   );
-} 
+}
