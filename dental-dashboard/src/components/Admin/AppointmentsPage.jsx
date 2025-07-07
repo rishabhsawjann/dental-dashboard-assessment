@@ -344,7 +344,7 @@ export default function AppointmentsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editIncident, setEditIncident] = useState(null);
   const [page, setPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 5;
 
   const filtered = incidents.filter(i => {
     const patient = patients.find(p => p.id === i.patientId);
@@ -388,133 +388,155 @@ export default function AppointmentsPage() {
   const paginated = sorted.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
-    <div className="bg-gradient-to-br from-white via-slate-50 to-blue-50/30 rounded-2xl shadow-xl p-8 border border-slate-100">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent">All Appointments</h2>
-            <CalendarClock className="w-9 h-9 text-slate-700 opacity-80" />
+    <div className="h-full flex flex-col bg-gradient-to-br from-white via-slate-50 to-blue-50/30 rounded-2xl shadow-xl border border-slate-100 min-h-0" style={{ minHeight: '600px' }}>
+      {/* Header Section - Fixed */}
+      <div className="flex-shrink-0 p-8 pb-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent">All Appointments</h2>
+              <CalendarClock className="w-9 h-9 text-slate-700 opacity-80" />
+            </div>
+            <p className="text-slate-600">Manage and track all appointments across patients</p>
           </div>
-          <p className="text-slate-600">Manage and track all appointments across patients</p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-          <div className="relative">
-            <input
-              className="w-full sm:w-80 px-4 py-3 pl-12 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-300 hover:border-slate-300 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
-              placeholder="Search by patient, title, or description..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-sky-400 w-5 h-5" />
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="relative">
+              <input
+                className="w-full sm:w-80 px-4 py-3 pl-12 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-300 hover:border-slate-300 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
+                placeholder="Search by patient, title, or description..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-sky-400 w-5 h-5" />
+            </div>
+            <StatusDropdown value={statusFilter} onChange={setStatusFilter} />
+            <button
+              onClick={() => { setEditIncident(null); setShowModal(true); }}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white font-semibold hover:from-sky-700 hover:via-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] whitespace-nowrap"
+            >
+              + Add Appointment
+            </button>
           </div>
-          <StatusDropdown value={statusFilter} onChange={setStatusFilter} />
-          <button
-            onClick={() => { setEditIncident(null); setShowModal(true); }}
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white font-semibold hover:from-sky-700 hover:via-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] whitespace-nowrap"
-          >
-            + Add Appointment
-          </button>
         </div>
       </div>
-      <div className="bg-gradient-to-br from-slate-50 to-blue-50/50 rounded-xl overflow-x-auto shadow-inner border border-slate-200">
-        <table className="w-full min-w-[900px]">
-          <thead>
-            <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50">
-              <th className="p-4 text-left font-semibold text-slate-700">Patient</th>
-              <th className="p-4 text-left font-semibold text-slate-700">Title</th>
-              <th className="p-4 text-left font-semibold text-slate-700">Date & Time</th>
-              <th className="p-4 text-left font-semibold text-slate-700">Status</th>
-              <th className="p-4 text-left font-semibold text-slate-700">Cost</th>
-              <th className="p-4 text-left font-semibold text-slate-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginated.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="text-center p-12">
-                  <div className="text-slate-400">
-                    <div className="text-6xl mb-4 animate-pulse">📅</div>
-                    <div className="text-lg font-semibold mb-2">No appointments found</div>
-                    <div className="text-sm">Try adjusting your search or add a new appointment</div>
-                  </div>
-                </td>
-              </tr>
-            ) : paginated.map((i, idx) => {
-              const patient = patients.find(p => p.id === i.patientId);
-              const badge = getStatusBadgeProps(i.status);
-              return (
-                <tr key={i.id} className={`border-b border-slate-100 hover:bg-gradient-to-r hover:from-sky-50/80 hover:to-indigo-50/80 transition-all duration-300 ${idx % 2 === 0 ? 'bg-white/60' : 'bg-slate-50/60'}`}>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center overflow-hidden shadow-sm">
-                        {patient?.profilePic ? (
-                          <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-lg text-slate-400">👤</span>
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-semibold text-slate-800">{patient?.name || 'Unknown'}</div>
-                        <div className="text-xs text-slate-500">{patient?.contact}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-4 font-medium text-slate-700">{i.title}</td>
-                  <td className="p-4 text-slate-700">
-                    {new Date(i.appointmentDate).toLocaleDateString()}<br />
-                    <span className="text-xs text-slate-500">{new Date(i.appointmentDate).toLocaleTimeString()}</span>
-                  </td>
-                  <td className="p-4">
-                    <span className={`flex items-center gap-2 rounded-full px-3 py-1 font-medium text-sm shadow-sm ${badge.bg} ${badge.text}`}>{badge.icon} {i.status}</span>
-                  </td>
-                  <td className="p-4 align-middle">
-                    {typeof i.cost !== 'undefined' && i.cost !== '' && i.cost !== null
-                      ? <span className={i.status === 'Completed' ? 'text-emerald-600 font-semibold' : 'text-slate-700'}>
-                          ${parseFloat(i.cost) % 1 === 0 ? parseInt(i.cost) : parseFloat(i.cost).toFixed(2)}
-                        </span>
-                      : <span className="text-slate-400">-</span>
-                    }
-                  </td>
-                  <td className="p-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => { setEditIncident(i); setShowModal(true); }}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 hover:from-sky-200 hover:to-blue-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => window.confirm('Delete this appointment?') && deleteIncident(i.id)}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-100 to-pink-100 text-rose-700 hover:from-rose-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
+
+      
+      <div className="flex-1 flex flex-col min-h-0 px-8 pb-4">
+        <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50/50 rounded-xl overflow-hidden shadow-inner border border-slate-200 min-h-0">
+          <div className="h-full overflow-auto min-h-0">
+            <table className="w-full min-w-[900px]">
+              <thead className="sticky top-0 z-10">
+                <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50">
+                  <th className="p-4 text-left font-semibold text-slate-700">Patient</th>
+                  <th className="p-4 text-left font-semibold text-slate-700">Title</th>
+                  <th className="p-4 text-left font-semibold text-slate-700">Date & Time</th>
+                  <th className="p-4 text-left font-semibold text-slate-700">Status</th>
+                  <th className="p-4 text-left font-semibold text-slate-700">Cost</th>
+                  <th className="p-4 text-left font-semibold text-slate-700">Actions</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-6">
-          <button
-            className="px-3 py-1 rounded-lg bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 text-slate-700 transition-all duration-300 shadow-sm hover:shadow-md"
-            onClick={() => setPage(p => Math.max(1, p - 1))}
-            disabled={page === 1}
-          >
-            Prev
-          </button>
-          <button
-            className="px-3 py-1 rounded-lg bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 text-slate-700 transition-all duration-300 shadow-sm hover:shadow-md"
-            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-            disabled={page === totalPages}
-          >
-            Next
-          </button>
+              </thead>
+              <tbody>
+                {paginated.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="text-center p-12">
+                      <div className="text-slate-400">
+                        <div className="text-6xl mb-4 animate-pulse">📅</div>
+                        <div className="text-lg font-semibold mb-2">No appointments found</div>
+                        <div className="text-sm">Try adjusting your search or add a new appointment</div>
+                      </div>
+                    </td>
+                  </tr>
+                ) : paginated.map((i, idx) => {
+                  const patient = patients.find(p => p.id === i.patientId);
+                  const badge = getStatusBadgeProps(i.status);
+                  return (
+                    <tr key={i.id} className={`border-b border-slate-100 hover:bg-gradient-to-r hover:from-sky-50/80 hover:to-indigo-50/80 transition-all duration-300 ${idx % 2 === 0 ? 'bg-white/60' : 'bg-slate-50/60'}`}>
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center overflow-hidden shadow-sm">
+                            {patient?.profilePic ? (
+                              <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-lg text-slate-400">👤</span>
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-800">{patient?.name || 'Unknown'}</div>
+                            <div className="text-xs text-slate-500">{patient?.contact}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 font-medium text-slate-700">{i.title}</td>
+                      <td className="p-4 text-slate-700">
+                        {new Date(i.appointmentDate).toLocaleDateString()}<br />
+                        <span className="text-xs text-slate-500">{new Date(i.appointmentDate).toLocaleTimeString()}</span>
+                      </td>
+                      <td className="p-4">
+                        <span className={`flex items-center gap-2 rounded-full px-3 py-1 font-medium text-sm shadow-sm ${badge.bg} ${badge.text}`}>{badge.icon} {i.status}</span>
+                      </td>
+                      <td className="p-4 align-middle">
+                        {typeof i.cost !== 'undefined' && i.cost !== '' && i.cost !== null
+                          ? <span className={i.status === 'Completed' ? 'text-emerald-600 font-semibold' : 'text-slate-700'}>
+                              ${parseFloat(i.cost) % 1 === 0 ? parseInt(i.cost) : parseFloat(i.cost).toFixed(2)}
+                            </span>
+                          : <span className="text-slate-400">-</span>
+                        }
+                      </td>
+                      <td className="p-4">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => { setEditIncident(i); setShowModal(true); }}
+                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 hover:from-sky-200 hover:to-blue-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => window.confirm('Delete this appointment?') && deleteIncident(i.id)}
+                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-100 to-pink-100 text-rose-700 hover:from-rose-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-      )}
+      </div>
+
+      <div className="flex-shrink-0 px-8 pb-6 border-t border-slate-200 pt-4">
+        {totalPages > 1 ? (
+          <div className="flex justify-center items-center gap-2">
+            <button
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 text-slate-700 transition-all duration-300 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2 text-slate-600 font-medium">
+              Page {page} of {totalPages}
+            </span>
+            <button
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 text-slate-700 transition-all duration-300 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center">
+            <span className="px-4 py-2 text-slate-500 text-sm">
+              Showing all {sorted.length} appointments
+            </span>
+          </div>
+        )}
+      </div>
+
       {showModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <AppointmentModal

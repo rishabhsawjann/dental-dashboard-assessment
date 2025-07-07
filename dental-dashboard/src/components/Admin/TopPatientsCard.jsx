@@ -24,7 +24,7 @@ export default function TopPatientsCard({ patients, medalIcon }) {
         {top3.map((p) => (
           <div
             key={p.id}
-            className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
+            className="flex items-center gap-2 bg-white rounded-xl px-3 py-1.5 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
           >
             
             <div className="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center text-lg font-bold text-pink-700 shadow-sm">
@@ -71,7 +71,7 @@ export function TopServicesCard({ incidents, serviceIcon }) {
         {top3.map((s) => (
           <div
             key={s.title}
-            className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
+            className="flex items-center gap-2 bg-white rounded-xl px-3 py-1.5 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
           >
             <div className="flex flex-col min-w-0 flex-1">
               <span className="font-semibold text-gray-800 truncate">{s.title}</span>
@@ -99,17 +99,17 @@ export function CombinedTopCard({ patients, incidents, medalIcon, serviceIcon })
   const top3Services = sortedServices.slice(0, 3);
 
   return (
-    <div className="rounded-2xl shadow-md p-6 bg-pink-50 flex flex-col items-center w-full max-w-md mx-auto">
+    <div className="rounded-2xl shadow-md p-4 bg-pink-50 flex flex-col items-center w-full max-w-md mx-auto">
      
-      <h3 className="text-2xl font-extrabold text-pink-800 mb-4 w-full text-center flex items-center justify-center gap-2 border-b-2 border-pink-200 pb-2 tracking-wide">
+      <h3 className="text-xl font-extrabold text-pink-800 mb-3 w-full text-center flex items-center justify-center gap-2 border-b-2 border-pink-200 pb-2 tracking-wide">
         {medalIcon}
         Top Patients
       </h3>
-      <div className="flex flex-col gap-3 w-full justify-center mb-6">
+      <div className="flex flex-col gap-2 w-full justify-center mb-4">
         {top3Patients.map((p) => (
           <div
             key={p.id}
-            className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
+            className="flex items-center gap-2 bg-white rounded-xl px-3 py-1.5 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
           >
             
             <div className="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center text-lg font-bold text-pink-700 shadow-sm">
@@ -128,15 +128,15 @@ export function CombinedTopCard({ patients, incidents, medalIcon, serviceIcon })
         ))}
       </div>
      
-      <h3 className="text-2xl font-extrabold text-pink-800 mb-4 w-full text-center flex items-center justify-center gap-2 border-b-2 border-pink-200 pb-2 tracking-wide">
+      <h3 className="text-xl font-extrabold text-pink-800 mb-3 w-full text-center flex items-center justify-center gap-2 border-b-2 border-pink-200 pb-2 tracking-wide">
         {serviceIcon}
         Top Services
       </h3>
-      <div className="flex flex-col gap-3 w-full justify-center">
+      <div className="flex flex-col gap-2 w-full justify-center">
         {top3Services.map((s) => (
           <div
             key={s.title}
-            className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
+            className="flex items-center gap-2 bg-white rounded-xl px-3 py-1.5 shadow-sm hover:bg-pink-100 transition-all min-w-[180px]"
           >
             <div className="flex flex-col min-w-0 flex-1">
               <span className="font-semibold text-gray-800 truncate">{s.title}</span>

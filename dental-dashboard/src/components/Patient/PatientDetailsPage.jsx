@@ -70,9 +70,9 @@ export default function PatientDetailsPage() {
       <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full opacity-15 blur-lg"></div>
       
       <div className="w-full max-w-5xl mx-auto mb-4 md:mb-6 px-4 md:px-0 relative z-10">
-        <div className="text-2xl md:text-3xl font-extrabold text-gray-800 flex items-center gap-3">
-          <span role="img" aria-label="wave" className="animate-bounce">👋</span>
-          <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg">
+        <div className="flex flex-col items-center justify-center gap-2 mb-2 w-full text-center">
+          <span role="img" aria-label="wave" className="animate-bounce text-3xl md:text-4xl mx-auto mb-1">👋</span>
+          <span className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg w-full">
             Welcome back, {currentPatient.name}!
           </span>
         </div>

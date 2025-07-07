@@ -4,7 +4,7 @@ import { DollarSign } from 'lucide-react';
 
 export default function RevenueChart({ data }) {
   return (
-    <div className="w-full h-64 relative">
+    <div className="w-full h-48 relative">
       
       <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex items-center" style={{ height: '90%' }}>
         <DollarSign className="w-8 h-8 text-green-500 opacity-80" />

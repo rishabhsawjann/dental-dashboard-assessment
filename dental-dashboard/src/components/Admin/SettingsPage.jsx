@@ -18,7 +18,6 @@ import {
   X,
   Users,
   Activity,
-  DollarSign
 } from 'lucide-react';
 
 function formatDate(date) {
@@ -245,7 +244,6 @@ export default function SettingsPage() {
 
   const totalPatients = patients.length;
   const totalAppointments = incidents.length;
-  const completedAppointments = incidents.filter(i => i.status === 'Completed').length;
   const memberSince = formatDate(adminData.joinDate);
 
   const info = [
@@ -298,11 +296,11 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-4 px-2">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-2 px-1">
       <div className="max-w-4xl mx-auto">
         
-        <div className="flex items-center gap-4 mb-4 animate-fadeInUp">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+        <div className="flex items-center gap-3 mb-2 animate-fadeInUp">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
             <SettingsIcon className="w-7 h-7 text-white" />
           </div>
           <div>
@@ -311,8 +309,8 @@ export default function SettingsPage() {
           </div>
         </div>
        
-        <div className="relative rounded-2xl overflow-hidden mb-4 shadow-lg border border-gray-200 transform hover:scale-[1.01] transition-all duration-300 hover:shadow-2xl">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 flex flex-col sm:flex-row items-center gap-4 relative overflow-hidden">
+        <div className="relative rounded-2xl overflow-hidden mb-2 shadow-lg border border-gray-200 transform hover:scale-[1.01] transition-all duration-300 hover:shadow-2xl">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-3 flex flex-col sm:flex-row items-center gap-3 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
             <div className="relative">
               <div className="w-18 h-18 rounded-full border-4 border-white overflow-hidden bg-white flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300">
@@ -322,12 +320,12 @@ export default function SettingsPage() {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg p-4 flex flex-col gap-2 transform hover:scale-[1.02] transition-all duration-300 hover:shadow-xl hover:bg-white/90">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2"><User2 className="w-5 h-5 text-blue-600 animate-pulse" /> Personal Information</h2>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg p-3 flex flex-col gap-1.5 transform hover:scale-[1.02] transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+            <h2 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2"><User2 className="w-5 h-5 text-blue-600 animate-pulse" /> Personal Information</h2>
             {info.map(({ icon, label, value }) => (
-              <div key={label} className="flex items-center gap-3 hover:bg-gray-50/50 rounded-lg p-2 transition-all duration-200">
+              <div key={label} className="flex items-center gap-2 hover:bg-gray-50/50 rounded-lg p-1.5 transition-all duration-200">
                 <span className="transform hover:scale-110 transition-transform duration-200">{icon}</span>
                 <span className="text-gray-700 font-medium w-32">{label}:</span>
                 <span className="text-gray-600">{value}</span>
@@ -335,10 +333,10 @@ export default function SettingsPage() {
             ))}
           </div>
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg p-4 flex flex-col gap-2 transform hover:scale-[1.02] transition-all duration-300 hover:shadow-xl hover:bg-white/90">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2"><Shield className="w-5 h-5 text-blue-600 animate-pulse" /> Account Details</h2>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg p-3 flex flex-col gap-1.5 transform hover:scale-[1.02] transition-all duration-300 hover:shadow-xl hover:bg-white/90">
+            <h2 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2"><Shield className="w-5 h-5 text-blue-600 animate-pulse" /> Account Details</h2>
             {account.map(({ icon, label, value }) => (
-              <div key={label} className="flex items-center gap-3 hover:bg-gray-50/50 rounded-lg p-2 transition-all duration-200">
+              <div key={label} className="flex items-center gap-2 hover:bg-gray-50/50 rounded-lg p-1.5 transition-all duration-200">
                 <span className="transform hover:scale-110 transition-transform duration-200">{icon}</span>
                 <span className="text-gray-700 font-medium w-32">{label}:</span>
                 <span className="text-gray-600">{value}</span>
@@ -347,25 +345,25 @@ export default function SettingsPage() {
           </div>
         </div>
         
-        <div className="mb-4">
-          <div className="flex flex-col gap-2">
+        <div className="mb-2">
+          <div className="flex flex-col gap-1.5">
             {actions.map(({ icon, label, onClick }) => (
               <button
                 key={label}
                 onClick={onClick}
-                className="w-full flex items-center justify-between px-5 py-2 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 shadow-lg hover:bg-white hover:shadow-xl transition-all duration-300 text-gray-900 font-medium text-lg group transform hover:scale-[1.02] hover:-translate-y-1"
+                className="w-full flex items-center justify-between px-4 py-1.5 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 shadow-lg hover:bg-white hover:shadow-xl transition-all duration-300 text-gray-900 font-medium text-lg group transform hover:scale-[1.02] hover:-translate-y-1"
               >
-                <span className="flex items-center gap-3">{icon} {label}</span>
+                <span className="flex items-center gap-2">{icon} {label}</span>
                 <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
             ))}
           </div>
         </div>
         
-        <div className="mb-4">
+        <div className="mb-2">
           <button
             onClick={() => setShowLogoutModal(true)}
-            className="w-full flex items-center justify-center gap-3 px-5 py-2 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200 shadow-lg text-red-600 font-semibold text-lg hover:from-red-100 hover:to-pink-100 transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl"
+            className="w-full flex items-center justify-center gap-2 px-4 py-1.5 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200 shadow-lg text-red-600 font-semibold text-lg hover:from-red-100 hover:to-pink-100 transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl"
           >
             <LogOut className="w-5 h-5" /> Sign Out
           </button>

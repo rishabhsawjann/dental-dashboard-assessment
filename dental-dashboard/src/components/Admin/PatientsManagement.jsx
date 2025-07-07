@@ -219,7 +219,7 @@ export default function PatientsTable() {
   const [sortDir, setSortDir] = useState('asc');
   const [viewMode] = useState('table'); 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 6;
+  const pageSize = 5;
 
   
   useEffect(() => { setCurrentPage(1); }, [search, sortBy, sortDir]);

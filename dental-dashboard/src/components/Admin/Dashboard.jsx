@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAppData } from '../../context/AppDataContext';
-import TopPatientsCard, { TopServicesCard, CombinedTopCard } from './TopPatientsCard';
+import { CombinedTopCard } from './TopPatientsCard';
 import RevenueChart from './RevenueChart';
-import { UserRound, CalendarClock, Hourglass, CheckCircle2, DollarSign, Medal, Wrench, Star } from 'lucide-react';
+import { UserRound, CalendarClock, CheckCircle2, DollarSign, Medal, Wrench, Star } from 'lucide-react';
 
 
 function getDisplayStatus(inc) {
@@ -65,7 +65,6 @@ export default function Dashboard() {
   const [showUpcomingModal, setShowUpcomingModal] = useState(false);
   const [showPatientsModal, setShowPatientsModal] = useState(false);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
-  const [showAllCompleted, setShowAllCompleted] = useState(false);
   const [showRevenueModal, setShowRevenueModal] = useState(false);
   const [completedMonth, setCompletedMonth] = useState(new Date().getMonth());
   const [upcomingMonth, setUpcomingMonth] = useState(new Date().getMonth());
@@ -91,7 +90,6 @@ export default function Dashboard() {
   });
   const topPatients = [...patientVisitCounts].sort((a, b) => b.visits - a.visits).slice(0, 3);
 
-  const pendingCount = incidents.filter(i => getDisplayStatus(i) === 'Pending' || getDisplayStatus(i) === 'In Progress').length;
   const completedCount = incidents.filter(i => getDisplayStatus(i) === 'Completed').length;
 
   const totalRevenue = incidents
@@ -162,10 +160,10 @@ export default function Dashboard() {
   const filteredUpcomingAppointments = upcomingAppointmentsByMonth(upcomingMonth);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {kpis.map((kpi, idx) => (
-          <div key={kpi.label} className={`rounded-2xl shadow-md p-6 flex flex-col items-center ${kpi.color} hover:scale-105 transition-transform duration-200`}>
+          <div key={kpi.label} className={`rounded-2xl shadow-md p-4 flex flex-col items-center ${kpi.color} hover:scale-105 transition-transform duration-200`}>
             <div className="mb-2">{kpi.icon}</div>
             <div className="text-2xl font-bold mb-1">{kpi.value}</div>
             <div className="text-sm font-semibold text-gray-700 text-center">{kpi.label}</div>
@@ -205,10 +203,10 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        <div className="col-span-2 flex flex-col gap-6">
-          <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col">
-            <div className="flex items-center justify-between mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="col-span-2 flex flex-col gap-4">
+          <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col">
+            <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-bold text-blue-700">Revenue Overview</h3>
               <div className="flex gap-2">
                 <button
@@ -233,8 +231,8 @@ export default function Dashboard() {
             </div>
             <RevenueChart data={chartData} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-            <div className="bg-blue-50 rounded-2xl shadow-lg p-5 flex flex-col max-w-full w-full border border-blue-100 h-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <div className="bg-blue-50 rounded-2xl shadow-lg p-4 flex flex-col max-w-full w-full border border-blue-100 h-full">
               <div className="flex items-center gap-2 mb-2">
                 <CalendarClock className="w-5 h-5 text-blue-500" />
                 <h3 className="text-base font-bold text-blue-700 tracking-wide">Today's Appointments</h3>
@@ -247,7 +245,7 @@ export default function Dashboard() {
                   {todayAppointments.map((app) => {
                     const patient = patients.find(p => p.id === app.patientId);
                     return (
-                      <li key={app.id} className="py-2 flex items-center gap-3">
+                      <li key={app.id} className="py-1.5 flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-bold text-base shadow-sm">
                           {patient?.name?.[0] || '?'}
                         </div>
@@ -270,9 +268,9 @@ export default function Dashboard() {
                 View
               </button>
             </div>
-            <div className="bg-pink-50 rounded-2xl shadow-lg p-5 flex flex-col max-w-full w-full border border-pink-100 h-full">
+            <div className="bg-pink-50 rounded-2xl shadow-lg p-4 flex flex-col max-w-full w-full border border-pink-100 h-full">
               <h3 className="text-base font-bold text-pink-700 tracking-wide mb-2">Customer Satisfaction</h3>
-              <div className="flex flex-col gap-2 flex-1 justify-center">
+              <div className="flex flex-col gap-1.5 flex-1 justify-center">
                 <div>
                   <div className="font-semibold text-pink-800 mb-0">Service Rating</div>
                   <div className="flex items-center gap-2">
@@ -283,7 +281,7 @@ export default function Dashboard() {
                     <span className="ml-2 text-xs text-gray-500">(120 reviews)</span>
                   </div>
                 </div>
-                <div>
+                <div className="mt-1">
                   <div className="font-semibold text-pink-800 mb-0">Staff Rating</div>
                   <div className="flex items-center gap-2">
                     {[1,2,3,4,5].map(i => (

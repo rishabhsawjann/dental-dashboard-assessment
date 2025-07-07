@@ -65,53 +65,53 @@ function LoginPage() {
       <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full opacity-15 blur-lg animate-pulse" style={{animationDelay: '2s'}}></div>
       
       <div className="w-full max-w-md mx-4 relative z-10">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl">
-          <div className="text-center mb-8">
-            <div className="text-4xl mb-4 animate-bounce">🦷</div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">DentalCare</h2>
-            <p className="text-gray-600">Professional Dental Management System</p>
+        <div className="bg-white rounded-2xl shadow-2xl p-6 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-3xl">
+          <div className="text-center mb-4">
+            <div className="text-4xl mb-2 animate-bounce">🦷</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-1 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">DentalCare</h2>
+            <p className="text-gray-600 text-sm">Professional Dental Management System</p>
           </div>
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm animate-shake">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs animate-shake">
               {error}
             </div>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="transform transition-all duration-300 hover:scale-[1.02]">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
               <input 
                 type="email" 
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
                 required 
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:shadow-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:shadow-md"
                 placeholder="Enter your email"
               />
             </div>
             <div className="transform transition-all duration-300 hover:scale-[1.02]">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">Password</label>
               <input 
                 type="password" 
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
                 required 
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:shadow-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:shadow-md"
                 placeholder="Enter your password"
               />
             </div>
             <button 
               type="submit" 
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98]"
         >
               Sign In
             </button>
           </form>
-          <div className="mt-8 pt-6 border-t border-gray-100">
-            <div className="text-center text-sm text-gray-500">
-              <p className="mb-2 font-semibold text-gray-700">Demo Credentials:</p>
-              <div className="space-y-2 text-xs">
-                <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
-                  <p className="font-semibold text-blue-700 mb-1">Admin:</p>
+          <div className="mt-4 pt-3 border-t border-gray-100">
+            <div className="text-center text-xs text-gray-500">
+              <p className="mb-1 font-semibold text-gray-700">Demo Credentials:</p>
+              <div className="space-y-1 text-xs">
+                <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
+                  <p className="font-semibold text-blue-700 mb-0.5">Admin:</p>
                   <p className="text-gray-600">
                     <span>admin@entnt.in</span>
                     <CopyButton value="admin@entnt.in" label="admin email" />
@@ -119,8 +119,8 @@ function LoginPage() {
                     <CopyButton value="admin123" label="admin password" />
                   </p>
                 </div>
-                <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
-                  <p className="font-semibold text-green-700 mb-1">Patient:</p>
+                <div className="p-2 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
+                  <p className="font-semibold text-green-700 mb-0.5">Patient:</p>
                   <p className="text-gray-600">
                     <span>john.doe@entnt.in</span>
                     <CopyButton value="john.doe@entnt.in" label="patient email" />
@@ -136,8 +136,6 @@ function LoginPage() {
     </div>
   );
 }
-
-
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();

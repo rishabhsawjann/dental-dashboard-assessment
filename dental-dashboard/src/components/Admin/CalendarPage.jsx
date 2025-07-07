@@ -151,7 +151,7 @@ export default function CalendarPage() {
 
   
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-8">
+    <div className="bg-white rounded-2xl shadow-lg pt-4 px-8 pb-8">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
         <div>
           <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2" style={{lineHeight: '1.2'}}>

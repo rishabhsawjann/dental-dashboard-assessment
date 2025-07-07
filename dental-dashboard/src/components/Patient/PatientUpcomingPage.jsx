@@ -60,15 +60,12 @@ export default function PatientUpcomingPage() {
     [incidents, currentPatient]
   );
 
-  const now = new Date();
-  
-  
-  const allUpcoming = useMemo(() =>
-    patientAppointments
+  const allUpcoming = useMemo(() => {
+    const now = new Date();
+    return patientAppointments
       .filter(i => new Date(i.appointmentDate) >= now && i.status !== 'Completed')
-      .sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate)),
-    [patientAppointments]
-  );
+      .sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
+  }, [patientAppointments]);
 
 
   const completed = useMemo(() => 
@@ -123,15 +120,15 @@ export default function PatientUpcomingPage() {
     <div className="w-full min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 flex flex-col items-center py-0 md:py-10 px-0 md:px-8 font-sans">
       
       <div className="w-full max-w-4xl mx-auto px-4 md:px-0 mt-2 mb-4 flex flex-col items-center">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-8 h-8 text-white bg-gradient-to-r from-blue-400 to-purple-500 rounded-full shadow-lg p-1 flex items-center justify-center">
-            <User2 className="w-6 h-6" />
+        <div className="flex flex-col items-center justify-center gap-2 mb-2 w-full text-center">
+          <div className="w-10 h-10 text-white bg-gradient-to-r from-blue-400 to-purple-500 rounded-full shadow-lg p-2 flex items-center justify-center mx-auto mb-1">
+            <User2 className="w-7 h-7" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent tracking-tight leading-snug" style={{lineHeight: '1.2'}}>
+          <h1 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent tracking-tight leading-snug w-full" style={{lineHeight: '1.2'}}>
             Upcoming Appointments
           </h1>
         </div>
-        <p className="text-gray-600 text-base md:text-lg text-center max-w-2xl">
+        <p className="text-gray-600 text-base md:text-lg text-center max-w-2xl w-full">
           Welcome back, <span className="font-semibold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">{currentPatient.name}</span>! 
           Here are your next appointments and treatment summary.
         </p>
