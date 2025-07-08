@@ -12,8 +12,8 @@ root.render(
   </React.StrictMode>
 );
 
-
+//Im Not using service worker for now 
 serviceWorkerRegistration.unregister();
 
-
+//Im Not using reportWebVitals for now 
 reportWebVitals();

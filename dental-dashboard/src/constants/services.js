@@ -1,5 +1,4 @@
-// Centralized list of dental services and their prices/icons for use throughout the app.
-// If you need to update a price or add a service, do it here!
+
 
 const SERVICES = [
   { label: 'Dental Cleaning', icon: 'Sparkles', price: 60 },
