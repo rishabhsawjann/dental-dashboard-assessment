@@ -71,10 +71,12 @@ export default function PatientDetailsPage() {
       
       <div className="w-full max-w-5xl mx-auto mb-4 md:mb-6 px-4 md:px-0 relative z-10">
         <div className="flex flex-col items-center justify-center gap-2 mb-2 w-full text-center">
-          <span role="img" aria-label="wave" className="animate-bounce text-3xl md:text-4xl mx-auto mb-1">👋</span>
-          <span className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg w-full">
-            Welcome back, {currentPatient.name}!
-          </span>
+          <div className="flex items-center justify-center gap-3 w-full">
+            <span role="img" aria-label="wave" className="animate-bounce text-3xl md:text-4xl mb-1">👋</span>
+            <span className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg w-full text-left">
+              Welcome back, {currentPatient.name}!
+            </span>
+          </div>
         </div>
       </div>
 
