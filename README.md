@@ -186,7 +186,7 @@ npm test
 The app is deployed on Vercel for easy hosting and automatic deployments:
 - Connected to GitHub repository for automatic deployments
 - Built and deployed automatically on every push to main branch
-- Accessible at: [your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
+- Accessible at: https://entnt-dental-dashboard-chi.vercel.app/login
 
 Alternative deployment options:
 - Netlify
