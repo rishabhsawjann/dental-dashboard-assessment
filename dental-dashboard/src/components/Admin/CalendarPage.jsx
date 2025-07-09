@@ -116,12 +116,12 @@ export default function CalendarPage() {
   
   function DayModal({ date, appointments, onClose }) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto relative">
-          <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl">×</button>
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">Appointments for {date.toLocaleDateString()}</h3>
+      <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-8 w-full max-w-full sm:max-w-lg max-h-[90vh] overflow-y-auto relative">
+          <button onClick={onClose} className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-700 text-2xl">×</button>
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Appointments for {date.toLocaleDateString()}</h3>
           {appointments.length === 0 ? (
-            <div className="text-gray-400 text-center py-12">No appointments for this day.</div>
+            <div className="text-gray-400 text-center py-8 sm:py-12">No appointments for this day.</div>
           ) : (
             <div className="space-y-4">
               {appointments
@@ -130,12 +130,12 @@ export default function CalendarPage() {
                   const patient = patients.find(p => p.id === appt.patientId);
                   const displayStatus = getDisplayStatus(appt);
                   return (
-                    <div key={appt.id} className="flex flex-col gap-2 p-4 rounded-xl border bg-gray-50 text-gray-800 shadow-sm">
+                    <div key={appt.id} className="flex flex-col gap-2 p-3 sm:p-4 rounded-xl border bg-gray-50 text-gray-800 shadow-sm">
                       <div className="flex justify-between items-center">
                         <div className="font-semibold text-base">{patient?.name || 'Unknown'}</div>
                         <span className={`px-3 py-1 rounded-full text-xs font-medium border ${statusColors[displayStatus] || 'bg-gray-100 text-gray-700 border-gray-200'}`}>{displayStatus}</span>
                       </div>
-                      <div className="flex justify-between text-sm text-gray-600">
+                      <div className="flex flex-col sm:flex-row justify-between text-sm text-gray-600 gap-1 sm:gap-0">
                         <div><span className="font-medium">Time:</span> {new Date(appt.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         <div><span className="font-medium">Treatment:</span> {appt.title}</div>
                       </div>
@@ -151,16 +151,16 @@ export default function CalendarPage() {
 
   
   return (
-    <div className="bg-white rounded-2xl shadow-lg pt-4 px-8 pb-8">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
+    <div className="bg-white rounded-2xl shadow-lg pt-2 px-2 sm:pt-4 sm:px-8 pb-4 sm:pb-8">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 sm:mb-8 gap-2 sm:gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2" style={{lineHeight: '1.2'}}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2" style={{lineHeight: '1.2'}}>
             Calendar
             <Calendar className="w-8 h-8 text-gray-800 ml-2" />
           </h2>
           <p className="text-gray-600">View and manage all appointments</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col xs:flex-row gap-2 w-full md:w-auto mt-2 md:mt-0">
           <button
             onClick={() => setView('month')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${view === 'month' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
@@ -177,7 +177,7 @@ export default function CalendarPage() {
       </div>
       
       {view === 'month' && (
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2 sm:mb-4">
           <button onClick={prevMonth} className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">&lt;</button>
           <span className="font-semibold text-lg">
             {currentDate.toLocaleString('default', { month: 'long' })} {year}
@@ -187,10 +187,11 @@ export default function CalendarPage() {
       )}
       
       {view === 'month' && (
-        <div className="grid grid-cols-7 gap-2">
+        <div className="w-full">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2">
           
           {WEEKDAYS.map(day => (
-            <div key={day} className="text-center font-semibold text-gray-500 py-2">{day}</div>
+            <div key={day} className="text-center font-semibold text-gray-500 py-1 sm:py-2 text-xs sm:text-base">{day}</div>
           ))}
           
           {monthMatrix.map((week, i) =>
@@ -228,24 +229,24 @@ export default function CalendarPage() {
               return (
                 <div
                   key={i + '-' + j}
-                  className={`min-h-[80px] rounded-lg p-2 border flex flex-col justify-between shadow-sm transition-transform duration-150 ${date ? 'cursor-pointer hover:bg-blue-50 hover:scale-[1.01]' : 'opacity-0 pointer-events-none'}`}
+                  className={`rounded-lg border flex flex-col justify-between shadow-sm transition-transform duration-150 ${date ? 'cursor-pointer hover:bg-blue-50 hover:scale-[1.01]' : 'opacity-0 pointer-events-none'} min-h-[38px] sm:min-h-[80px] p-1 sm:p-2`}
                   style={customBg}
                   onClick={() => date && setModalDate(date)}
                 >
-                  {date && <div className="text-sm font-bold text-gray-700 mb-1">{date.getDate()}</div>}
-                  
-                  <div className="mt-auto text-xs text-center text-gray-600 font-medium pt-2 pb-1">
+                  {date && <div className="text-xs sm:text-sm font-bold text-gray-700 mb-0.5 sm:mb-1">{date.getDate()}</div>}
+                  <div className="mt-auto text-[10px] sm:text-xs text-center text-gray-600 font-medium pt-1 sm:pt-2 pb-0.5 sm:pb-1 leading-tight">
                     {date ? summary : ''}
                   </div>
                 </div>
               );
             })
           )}
+          </div>
         </div>
       )}
       
       {view === 'week' && (
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2 sm:mb-4">
           <button onClick={prevWeek} className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">&lt;</button>
           <span className="font-semibold text-lg">
             {weekDates[0].toLocaleDateString()} - {weekDates[6].toLocaleDateString()}
@@ -255,7 +256,8 @@ export default function CalendarPage() {
       )}
       
       {view === 'week' && (
-        <div className="grid grid-cols-7 gap-2">
+        <div className="overflow-x-auto">
+          <div className="min-w-[600px] grid grid-cols-7 gap-2">
           
           {WEEKDAYS.map((day, idx) => (
             <div key={day} className="text-center font-semibold text-gray-500 py-2">{day}</div>
@@ -305,6 +307,7 @@ export default function CalendarPage() {
               </div>
             );
           })}
+          </div>
         </div>
       )}
 

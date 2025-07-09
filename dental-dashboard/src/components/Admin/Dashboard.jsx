@@ -160,8 +160,8 @@ export default function Dashboard() {
   const filteredUpcomingAppointments = upcomingAppointmentsByMonth(upcomingMonth);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-2 sm:p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">
         {kpis.map((kpi, idx) => (
           <div key={kpi.label} className={`rounded-2xl shadow-md p-4 flex flex-col items-center ${kpi.color} hover:scale-105 transition-transform duration-200`}>
             <div className="mb-2">{kpi.icon}</div>

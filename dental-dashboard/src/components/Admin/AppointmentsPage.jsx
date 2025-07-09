@@ -399,8 +399,9 @@ export default function AppointmentsPage() {
             </div>
             <p className="text-slate-600">Manage and track all appointments across patients</p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-            <div className="relative">
+          {/* Responsive controls: stack vertically on mobile */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto mt-4 md:mt-0">
+            <div className="relative w-full sm:w-auto">
               <input
                 className="w-full sm:w-80 px-4 py-3 pl-12 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-300 hover:border-slate-300 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
                 placeholder="Search by patient, title, or description..."
@@ -409,10 +410,12 @@ export default function AppointmentsPage() {
               />
               <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-sky-400 w-5 h-5" />
             </div>
-            <StatusDropdown value={statusFilter} onChange={setStatusFilter} />
+            <div className="w-full sm:w-auto">
+              <StatusDropdown value={statusFilter} onChange={setStatusFilter} />
+            </div>
             <button
               onClick={() => { setEditIncident(null); setShowModal(true); }}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white font-semibold hover:from-sky-700 hover:via-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] whitespace-nowrap"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white font-semibold hover:from-sky-700 hover:via-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] whitespace-nowrap"
             >
               + Add Appointment
             </button>
@@ -421,88 +424,149 @@ export default function AppointmentsPage() {
       </div>
 
       
-      <div className="flex-1 flex flex-col min-h-0 px-8 pb-4">
+      <div className="flex-1 flex flex-col min-h-0 px-2 sm:px-8 pb-4">
         <div className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50/50 rounded-xl overflow-hidden shadow-inner border border-slate-200 min-h-0">
-          <div className="h-full overflow-auto min-h-0">
-            <table className="w-full min-w-[900px]">
-              <thead className="sticky top-0 z-10">
-                <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50">
-                  <th className="p-4 text-left font-semibold text-slate-700">Patient</th>
-                  <th className="p-4 text-left font-semibold text-slate-700">Title</th>
-                  <th className="p-4 text-left font-semibold text-slate-700">Date & Time</th>
-                  <th className="p-4 text-left font-semibold text-slate-700">Status</th>
-                  <th className="p-4 text-left font-semibold text-slate-700">Cost</th>
-                  <th className="p-4 text-left font-semibold text-slate-700">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginated.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} className="text-center p-12">
-                      <div className="text-slate-400">
-                        <div className="text-6xl mb-4 animate-pulse">📅</div>
-                        <div className="text-lg font-semibold mb-2">No appointments found</div>
-                        <div className="text-sm">Try adjusting your search or add a new appointment</div>
+          <div>
+            {/* Mobile Card View */}
+            <div className="block md:hidden p-2 space-y-4">
+              {paginated.length === 0 ? (
+                <div className="text-center p-12">
+                  <div className="text-slate-400">
+                    <div className="text-6xl mb-4 animate-pulse">📅</div>
+                    <div className="text-lg font-semibold mb-2">No appointments found</div>
+                    <div className="text-sm">Try adjusting your search or add a new appointment</div>
+                  </div>
+                </div>
+              ) : paginated.map((i) => {
+                const patient = patients.find(p => p.id === i.patientId);
+                const badge = getStatusBadgeProps(i.status);
+                return (
+                  <div key={i.id} className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-slate-100/50 hover:border-blue-200/50 hover:shadow-2xl transition-all duration-300 flex flex-col gap-2">
+                    <div className="flex items-start gap-3 mb-2">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-lg border-2 border-slate-200/50">
+                        {patient?.profilePic ? (
+                          <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-lg text-slate-400">👤</span>
+                        )}
                       </div>
-                    </td>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-slate-800 text-base mb-0.5 truncate">{patient?.name || 'Unknown'}</h3>
+                        <p className="text-slate-600 text-xs mb-0.5 truncate">{patient?.contact}</p>
+                        <p className="text-slate-600 text-xs truncate">{i.title}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mb-1 text-xs">
+                      <span className="bg-gradient-to-r from-sky-50 to-indigo-50 text-slate-700 rounded-full px-2 py-0.5 font-medium shadow-sm">
+                        {new Date(i.appointmentDate).toLocaleDateString()} {new Date(i.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                      <span className={`rounded-full px-2 py-0.5 font-medium shadow-sm ${badge.bg} ${badge.text} flex items-center gap-1`}>{badge.icon} {i.status}</span>
+                      {typeof i.cost !== 'undefined' && i.cost !== '' && i.cost !== null && (
+                        <span className={i.status === 'Completed' ? 'text-emerald-600 font-semibold' : 'text-slate-700'}>
+                          ${parseFloat(i.cost) % 1 === 0 ? parseInt(i.cost) : parseFloat(i.cost).toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-2 mt-1">
+                      <button
+                        onClick={() => { setEditIncident(i); setShowModal(true); }}
+                        className="flex-1 px-2 py-1 rounded-lg bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 hover:from-sky-200 hover:to-blue-200 transition-all duration-300 text-xs font-medium shadow-sm hover:shadow-md hover:scale-[1.02]"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => window.confirm('Delete this appointment?') && deleteIncident(i.id)}
+                        className="flex-1 px-2 py-1 rounded-lg bg-gradient-to-r from-rose-100 to-pink-100 text-rose-700 hover:from-rose-200 hover:to-pink-200 transition-all duration-300 text-xs font-medium shadow-sm hover:shadow-md hover:scale-[1.02]"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {/* Desktop Table View - horizontally scrollable on mobile */}
+            <div className="hidden md:block w-full overflow-x-auto">
+              <table className="w-full min-w-[900px] md:min-w-0">
+                <thead className="hidden md:table-header-group sticky top-0 z-10">
+                  <tr className="bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50">
+                    <th className="p-4 text-left font-semibold text-slate-700">Patient</th>
+                    <th className="p-4 text-left font-semibold text-slate-700">Title</th>
+                    <th className="p-4 text-left font-semibold text-slate-700">Date & Time</th>
+                    <th className="p-4 text-left font-semibold text-slate-700">Status</th>
+                    <th className="p-4 text-left font-semibold text-slate-700">Cost</th>
+                    <th className="p-4 text-left font-semibold text-slate-700">Actions</th>
                   </tr>
-                ) : paginated.map((i, idx) => {
-                  const patient = patients.find(p => p.id === i.patientId);
-                  const badge = getStatusBadgeProps(i.status);
-                  return (
-                    <tr key={i.id} className={`border-b border-slate-100 hover:bg-gradient-to-r hover:from-sky-50/80 hover:to-indigo-50/80 transition-all duration-300 ${idx % 2 === 0 ? 'bg-white/60' : 'bg-slate-50/60'}`}>
-                      <td className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center overflow-hidden shadow-sm">
-                            {patient?.profilePic ? (
-                              <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-lg text-slate-400">👤</span>
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-semibold text-slate-800">{patient?.name || 'Unknown'}</div>
-                            <div className="text-xs text-slate-500">{patient?.contact}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="p-4 font-medium text-slate-700">{i.title}</td>
-                      <td className="p-4 text-slate-700">
-                        {new Date(i.appointmentDate).toLocaleDateString()}<br />
-                        <span className="text-xs text-slate-500">{new Date(i.appointmentDate).toLocaleTimeString()}</span>
-                      </td>
-                      <td className="p-4">
-                        <span className={`flex items-center gap-2 rounded-full px-3 py-1 font-medium text-sm shadow-sm ${badge.bg} ${badge.text}`}>{badge.icon} {i.status}</span>
-                      </td>
-                      <td className="p-4 align-middle">
-                        {typeof i.cost !== 'undefined' && i.cost !== '' && i.cost !== null
-                          ? <span className={i.status === 'Completed' ? 'text-emerald-600 font-semibold' : 'text-slate-700'}>
-                              ${parseFloat(i.cost) % 1 === 0 ? parseInt(i.cost) : parseFloat(i.cost).toFixed(2)}
-                            </span>
-                          : <span className="text-slate-400">-</span>
-                        }
-                      </td>
-                      <td className="p-4">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => { setEditIncident(i); setShowModal(true); }}
-                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 hover:from-sky-200 hover:to-blue-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => window.confirm('Delete this appointment?') && deleteIncident(i.id)}
-                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-100 to-pink-100 text-rose-700 hover:from-rose-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
-                          >
-                            Delete
-                          </button>
+                </thead>
+                <tbody>
+                  {paginated.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="text-center p-12">
+                        <div className="text-slate-400">
+                          <div className="text-6xl mb-4 animate-pulse">📅</div>
+                          <div className="text-lg font-semibold mb-2">No appointments found</div>
+                          <div className="text-sm">Try adjusting your search or add a new appointment</div>
                         </div>
                       </td>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  ) : paginated.map((i, idx) => {
+                    const patient = patients.find(p => p.id === i.patientId);
+                    const badge = getStatusBadgeProps(i.status);
+                    return (
+                      <tr key={i.id} className={`border-b border-slate-100 hover:bg-gradient-to-r hover:from-sky-50/80 hover:to-indigo-50/80 transition-all duration-300 ${idx % 2 === 0 ? 'bg-white/60' : 'bg-slate-50/60'} md:table-row`}>
+                        <td className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center overflow-hidden shadow-sm">
+                              {patient?.profilePic ? (
+                                <img src={patient.profilePic} alt={patient.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="text-lg text-slate-400">👤</span>
+                              )}
+                            </div>
+                            <div>
+                              <div className="font-semibold text-slate-800">{patient?.name || 'Unknown'}</div>
+                              <div className="text-xs text-slate-500">{patient?.contact}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-4 font-medium text-slate-700">{i.title}</td>
+                        <td className="p-4 text-slate-700">
+                          {new Date(i.appointmentDate).toLocaleDateString()}<br />
+                          <span className="text-xs text-slate-500">{new Date(i.appointmentDate).toLocaleTimeString()}</span>
+                        </td>
+                        <td className="p-4">
+                          <span className={`flex items-center gap-2 rounded-full px-3 py-1 font-medium text-sm shadow-sm ${badge.bg} ${badge.text}`}>{badge.icon} {i.status}</span>
+                        </td>
+                        <td className="p-4 align-middle">
+                          {typeof i.cost !== 'undefined' && i.cost !== '' && i.cost !== null
+                            ? <span className={i.status === 'Completed' ? 'text-emerald-600 font-semibold' : 'text-slate-700'}>
+                                ${parseFloat(i.cost) % 1 === 0 ? parseInt(i.cost) : parseFloat(i.cost).toFixed(2)}
+                              </span>
+                            : <span className="text-slate-400">-</span>
+                          }
+                        </td>
+                        <td className="p-4">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => { setEditIncident(i); setShowModal(true); }}
+                              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-sky-100 to-blue-100 text-sky-700 hover:from-sky-200 hover:to-blue-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => window.confirm('Delete this appointment?') && deleteIncident(i.id)}
+                              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-rose-100 to-pink-100 text-rose-700 hover:from-rose-200 hover:to-pink-200 transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -538,17 +602,19 @@ export default function AppointmentsPage() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <AppointmentModal
-            initial={editIncident}
-            patients={patients}
-            onSave={data => {
-              if (editIncident) updateIncident(editIncident.id, data);
-              else addIncident(data);
-              setShowModal(false);
-            }}
-            onCancel={() => setShowModal(false)}
-          />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="w-full max-w-2xl mx-auto">
+            <AppointmentModal
+              initial={editIncident}
+              patients={patients}
+              onSave={data => {
+                if (editIncident) updateIncident(editIncident.id, data);
+                else addIncident(data);
+                setShowModal(false);
+              }}
+              onCancel={() => setShowModal(false)}
+            />
+          </div>
         </div>
       )}
     </div>
